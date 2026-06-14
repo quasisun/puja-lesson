@@ -1,1 +1,1161 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Учебная Пуджа</title>
+<style>
+* { box-sizing: border-box; margin: 0; padding: 0; }
 
+body {
+  font-family: Arial, sans-serif;
+  background: #fff;
+  color: #222;
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+
+/* HEADER */
+header {
+  background: linear-gradient(135deg, #df2227, #ef5024);
+  color: #fff;
+  padding: 8px 20px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-shrink: 0;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.2);
+}
+header h1 { font-size: 1.2rem; letter-spacing: 3px; font-weight: 700; }
+header .om { font-size: 1.5rem; }
+
+/* TABS */
+.deity-tabs {
+  background: #f8f8f8;
+  border-bottom: 2px solid #df2227;
+  display: flex;
+  overflow-x: auto;
+  flex-shrink: 0;
+  scrollbar-width: thin;
+}
+.deity-tabs::-webkit-scrollbar { height: 3px; }
+.deity-tabs::-webkit-scrollbar-thumb { background: #ef5024; }
+
+.tab-btn {
+  border: none; background: transparent;
+  padding: 7px 13px; cursor: pointer;
+  font-family: Arial, sans-serif; font-size: 0.75rem;
+  color: #555; white-space: nowrap;
+  border-bottom: 3px solid transparent;
+  transition: all 0.2s;
+  display: flex; flex-direction: column; align-items: center; gap: 1px;
+}
+.tab-btn .tab-icon { font-size: 1.2rem; }
+.tab-btn .tab-name { font-size: 0.65rem; font-weight: 600; }
+.tab-btn:hover { color: #df2227; background: #fff0f0; }
+.tab-btn.active { color: #df2227; border-bottom-color: #df2227; background: #fff; font-weight: 700; }
+
+/* MAIN 3-COL LAYOUT */
+.main {
+  display: grid;
+  grid-template-columns: 220px 1fr 230px;
+  flex: 1;
+  overflow: hidden;
+  min-height: 0;
+}
+
+/* LEFT PANEL */
+.left-panel {
+  background: #fafafa;
+  border-right: 1px solid #eee;
+  display: flex;
+  flex-direction: column;
+  padding: 12px 10px;
+  gap: 10px;
+  overflow: hidden;
+}
+.mantra-card {
+  background: linear-gradient(135deg, #df2227, #ef5024);
+  border-radius: 10px;
+  padding: 10px 12px;
+  color: #fff;
+  flex-shrink: 0;
+}
+.deity-name-left {
+  font-size: 1rem; font-weight: 700; letter-spacing: 2px;
+  color: #df2227; margin-bottom: 2px;
+}
+.deity-sub-left { font-size: 0.68rem; color: #999; font-style: italic; margin-bottom: 8px; }
+.m-skt { font-size: 0.88rem; font-style: italic; line-height: 1.5; margin-bottom: 4px; }
+.m-ru  { font-size: 0.68rem; opacity: 0.85; line-height: 1.4; }
+
+.seq-title { font-size: 0.63rem; color: #aaa; letter-spacing: 2px; text-transform: uppercase; margin-bottom: 6px; }
+.sequence-list { flex: 1; overflow-y: auto; }
+.seq-step {
+  display: flex; align-items: flex-start; gap: 6px;
+  padding: 4px 5px; border-radius: 6px;
+  font-size: 0.74rem; color: #bbb;
+  margin-bottom: 2px; transition: all 0.3s; line-height: 1.3;
+}
+.seq-step.done { color: #4a9a4a; }
+.seq-step.done .sn { background: #4a9a4a; color: #fff; }
+.seq-step.current { color: #df2227; font-weight: 700; background: #fff5f5; }
+.seq-step.current .sn { background: #df2227; color: #fff; }
+.sn {
+  min-width: 20px; height: 20px; background: #eee;
+  border-radius: 50%; display: flex; align-items: center; justify-content: center;
+  font-size: 0.65rem; font-weight: 700; flex-shrink: 0; margin-top: 1px;
+}
+.se { font-size: 0.95rem; flex-shrink: 0; }
+
+/* CENTER PANEL */
+.center-panel {
+  display: flex; flex-direction: column;
+  align-items: center;
+  overflow: hidden;
+  background: #fff;
+  padding: 8px 10px 6px;
+  gap: 6px;
+}
+
+/* Shrine */
+.shrine {
+  display: flex; flex-direction: column; align-items: center;
+  flex-shrink: 0;
+  position: relative;
+  padding-top: 18px;
+  width: 100%;
+}
+.shrine-halo {
+  position: absolute;
+  top: 14px; left: 50%; transform: translateX(-50%);
+  width: 180px; height: 180px;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(239,80,36,0.1) 0%, transparent 70%);
+  pointer-events: none;
+}
+/* Gold frame around deity */
+.deity-frame {
+  position: relative;
+  padding: 7px;
+  background: linear-gradient(145deg, #f5e070, #c8922a 25%, #f5e070 50%, #c8922a 75%, #f5e070);
+  border-radius: 12px;
+  box-shadow:
+    0 0 0 2px #8a5a10,
+    0 0 0 4px #e8c840,
+    0 0 0 6px #8a5a10,
+    0 6px 24px rgba(0,0,0,0.25),
+    inset 0 0 8px rgba(200,146,42,0.3);
+  z-index: 1;
+}
+.deity-frame::before {
+  content: '';
+  position: absolute;
+  inset: 3px;
+  border-radius: 8px;
+  border: 1.5px solid rgba(255,240,180,0.6);
+  pointer-events: none;
+  z-index: 2;
+}
+/* Corner ornaments */
+.deity-frame::after {
+  content: '✦';
+  position: absolute;
+  top: -6px; left: 50%; transform: translateX(-50%);
+  color: #c8922a; font-size: 0.85rem;
+  background: #fff; padding: 0 4px;
+  z-index: 3; line-height: 1;
+}
+.deity-img {
+  height: 165px;
+  width: auto;
+  object-fit: contain;
+  display: block;
+  border-radius: 6px;
+  transition: filter 0.4s;
+  position: relative; z-index: 1;
+}
+.deity-img.bless { animation: bless 0.6s ease; }
+@keyframes bless {
+  0%,100% { filter: drop-shadow(0 4px 14px rgba(0,0,0,0.15)); }
+  50% { filter: drop-shadow(0 0 28px rgba(239,80,36,0.8)); }
+}
+
+/* ALTAR */
+.altar-wrap {
+  width: 100%;
+  flex-shrink: 0;
+}
+
+.altar-surface {
+  background: linear-gradient(180deg, #e8d5a0 0%, #d4b870 40%, #c0a050 100%);
+  border-radius: 16px 16px 8px 8px;
+  border-top: 4px solid #c8922a;
+  border-left: 2px solid #b07820;
+  border-right: 2px solid #b07820;
+  padding: 10px 12px 8px;
+  box-shadow: 0 6px 20px rgba(0,0,0,0.2), inset 0 1px 0 rgba(255,255,255,0.3);
+  position: relative;
+}
+
+/* decorative altar border */
+.altar-surface::before {
+  content: '✦  ✦  ✦  ✦  ✦  ✦  ✦  ✦  ✦';
+  position: absolute; top: 3px; left: 0; right: 0;
+  text-align: center; font-size: 0.5rem;
+  color: rgba(160,100,0,0.5); letter-spacing: 6px;
+}
+
+.altar-row {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  gap: 5px;
+  margin-bottom: 5px;
+}
+.altar-row:last-child { margin-bottom: 0; }
+.altar-row.back-row .item-card { transform: scale(0.88); }
+.altar-row.main-row .item-card { transform: scale(1); }
+.altar-row.main-row .item-card.lamp-item { transform: scale(1.12); }
+
+.altar-table-leg {
+  height: 20px;
+  background: linear-gradient(90deg, #8a5a10, #c8922a 30%, #e8b44a 50%, #c8922a 70%, #8a5a10);
+  border-radius: 0 0 10px 10px;
+  margin: 0 30px;
+  box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+}
+
+/* Item cards on altar */
+.item-card {
+  background: rgba(255,255,255,0.75);
+  border: 1.5px solid rgba(200,146,42,0.4);
+  border-radius: 8px;
+  padding: 5px 2px;
+  cursor: pointer;
+  text-align: center;
+  transition: all 0.18s;
+  user-select: none;
+  display: flex; flex-direction: column; align-items: center; gap: 2px;
+  backdrop-filter: blur(2px);
+}
+.item-card:hover {
+  border-color: #ef5024;
+  background: rgba(255,245,240,0.95);
+  transform: translateY(-3px) scale(1.05) !important;
+  box-shadow: 0 4px 12px rgba(239,80,36,0.25);
+  z-index: 10; position: relative;
+}
+.item-card:active { transform: scale(0.93) !important; }
+.item-card.lamp-item {
+  background: rgba(255,240,200,0.9);
+  border-color: rgba(200,146,42,0.7);
+}
+.item-card.fixed-item {
+  border-color: rgba(200,146,42,0.6);
+}
+.item-card.highlight {
+  border-color: #ef5024 !important;
+  background: rgba(255,240,230,0.95) !important;
+  box-shadow: 0 0 0 3px rgba(239,80,36,0.4) !important;
+  animation: pulse 0.8s ease infinite alternate;
+  position: relative; z-index: 10;
+}
+@keyframes pulse {
+  from { box-shadow: 0 0 0 2px rgba(239,80,36,0.3); }
+  to   { box-shadow: 0 0 0 5px rgba(239,80,36,0.5); }
+}
+.item-card.wrong-flash { animation: wrong 0.4s ease; }
+@keyframes wrong {
+  0%,100% { background: rgba(255,255,255,0.75); }
+  50% { background: rgba(255,200,200,0.95); border-color: #c00; }
+}
+.item-emoji { font-size: 1.4rem; line-height: 1; }
+.item-name  { font-size: 0.52rem; color: #6b4a10; line-height: 1.2; text-align: center; }
+
+/* BELL - top-right of shrine */
+.bell-zone {
+  position: absolute;
+  top: 14px; right: 14px;
+  display: flex; flex-direction: column; align-items: center;
+  gap: 4px; z-index: 20;
+}
+.bell-btn {
+  background: linear-gradient(135deg, #f5e0a0, #e8c860);
+  border: 2px solid #c8922a;
+  border-radius: 50%;
+  width: 52px; height: 52px;
+  display: flex; flex-direction: column;
+  align-items: center; justify-content: center;
+  cursor: pointer;
+  transition: all 0.2s;
+  box-shadow: 0 2px 8px rgba(200,146,42,0.3);
+  font-size: 0.55rem; color: #7a5010; gap: 0px;
+  filter: grayscale(0.7) opacity(0.45);
+  pointer-events: none;
+}
+.bell-btn.active {
+  filter: none;
+  pointer-events: all;
+  animation: bell-glow 2s ease-in-out infinite;
+}
+@keyframes bell-glow {
+  0%,100% { box-shadow: 0 2px 8px rgba(200,146,42,0.3); }
+  50% { box-shadow: 0 0 18px rgba(239,80,36,0.7), 0 2px 8px rgba(200,146,42,0.3); }
+}
+.bell-btn.active:hover { transform: scale(1.1); }
+.bell-icon { font-size: 1.5rem; }
+.bell-label { font-size: 0.5rem; font-weight: 700; }
+.bell-hint { font-size: 0.6rem; color: #aaa; font-style: italic; text-align: center; max-width: 56px; line-height: 1.2; }
+.bell-btn.ringing { animation: ring-anim 0.5s ease !important; }
+@keyframes ring-anim {
+  0%   { transform: rotate(0deg); }
+  20%  { transform: rotate(18deg); }
+  40%  { transform: rotate(-18deg); }
+  60%  { transform: rotate(10deg); }
+  80%  { transform: rotate(-10deg); }
+  100% { transform: rotate(0deg); }
+}
+
+/* RIGHT PANEL */
+.right-panel {
+  border-left: 1px solid #eee;
+  display: flex; flex-direction: column;
+  padding: 12px 12px;
+  gap: 10px;
+  overflow: hidden;
+  background: #fafafa;
+}
+
+.step-progress {
+  flex-shrink: 0;
+  display: flex; align-items: center; gap: 8px;
+}
+.step-bar-wrap {
+  flex: 1; height: 5px; background: #eee; border-radius: 3px; overflow: hidden;
+}
+.step-bar {
+  height: 100%;
+  background: linear-gradient(90deg, #df2227, #ef5024);
+  border-radius: 3px; transition: width 0.5s ease;
+}
+.step-txt { font-size: 0.68rem; color: #aaa; font-weight: 600; white-space: nowrap; }
+
+.step-card {
+  background: #fff5f5;
+  border: 2px solid #df2227;
+  border-radius: 12px;
+  padding: 12px 14px;
+  text-align: center;
+  flex-shrink: 0;
+  transition: all 0.3s;
+}
+.step-card.shake { animation: shake 0.4s ease; }
+.step-card.wrong { border-color: #c00; background: #fff0f0; }
+.step-card.right  { border-color: #4a4; background: #f0fff0; }
+@keyframes shake {
+  0%,100% { transform: translateX(0); }
+  25% { transform: translateX(-7px); }
+  75% { transform: translateX(7px); }
+}
+.step-badge {
+  display: inline-block;
+  background: linear-gradient(135deg, #df2227, #ef5024);
+  color: #fff; font-size: 0.62rem; font-weight: 700;
+  letter-spacing: 1px; padding: 2px 10px;
+  border-radius: 20px; margin-bottom: 7px;
+}
+.step-instruction { font-size: 0.95rem; font-weight: 700; color: #222; line-height: 1.3; }
+.step-accepts { font-size: 1.2rem; margin-top: 5px; letter-spacing: 3px; }
+.step-hint-txt { font-size: 0.72rem; color: #aaa; margin-top: 3px; }
+
+.feedback {
+  text-align: center; font-size: 0.82rem; font-weight: 600;
+  min-height: 20px; padding: 0 4px; line-height: 1.3;
+}
+.feedback.ok  { color: #3a8a3a; }
+.feedback.err { color: #c00; }
+
+.hint-btn {
+  border: none; background: #f0f0f0; color: #888;
+  font-family: Arial, sans-serif; font-size: 0.72rem;
+  padding: 5px 14px; border-radius: 20px;
+  cursor: pointer; align-self: flex-end; transition: all 0.2s;
+}
+.hint-btn:hover { background: #ffe8e0; color: #ef5024; }
+
+.tip-box {
+  flex: 1; overflow-y: auto;
+  background: #fff;
+  border: 1px solid #eee;
+  border-radius: 10px;
+  padding: 10px;
+  font-size: 0.78rem; color: #555; line-height: 1.6;
+}
+.tip-box h4 { font-size: 0.68rem; color: #df2227; letter-spacing: 2px; text-transform: uppercase; margin-bottom: 6px; }
+
+/* COMPLETE OVERLAY */
+.complete-overlay {
+  display: none; position: fixed; inset: 0;
+  background: rgba(255,255,255,0.93);
+  z-index: 100;
+  flex-direction: column; align-items: center; justify-content: center;
+  gap: 14px; text-align: center; padding: 30px;
+}
+.complete-overlay.show { display: flex; }
+.complete-icon { font-size: 3.5rem; }
+.complete-title { font-size: 1.8rem; font-weight: 700; color: #df2227; letter-spacing: 3px; }
+.complete-sub { font-size: 0.95rem; color: #666; max-width: 380px; line-height: 1.6; }
+.cbtn {
+  background: linear-gradient(135deg, #df2227, #ef5024);
+  color: #fff; border: none; padding: 11px 28px;
+  border-radius: 30px; font-size: 0.95rem;
+  font-family: Arial, sans-serif; cursor: pointer;
+  font-weight: 700; letter-spacing: 1px;
+  box-shadow: 0 4px 14px rgba(223,34,39,0.35);
+  transition: all 0.2s;
+}
+.cbtn:hover { transform: scale(1.04); }
+.cbtn.gray { background: linear-gradient(135deg, #777, #444); box-shadow: none; }
+
+/* Flying particle */
+.fly-p {
+  position: fixed; pointer-events: none; z-index: 200;
+  font-size: 1.8rem;
+  transition: left 0.65s cubic-bezier(0.4,0,0.2,1),
+              top 0.65s cubic-bezier(0.4,0,0.2,1),
+              opacity 0.65s, transform 0.65s;
+}
+/* Confetti */
+.cpiece {
+  position: fixed; pointer-events: none; z-index: 201;
+  width: 7px; height: 7px; border-radius: 2px;
+  animation: cfall 2.5s ease-in forwards;
+}
+@keyframes cfall {
+  0% { opacity: 1; transform: translateY(0) rotate(0deg); }
+  100% { opacity: 0; transform: translateY(280px) rotate(720deg); }
+}
+::-webkit-scrollbar { width: 4px; }
+::-webkit-scrollbar-thumb { background: #ddd; border-radius: 3px; }
+</style>
+</head>
+<body>
+
+<header>
+  <span class="om">ॐ</span>
+  <h1>УЧЕБНАЯ ПУДЖА</h1>
+  <span class="om">🪔</span>
+</header>
+
+<div class="deity-tabs" id="deity-tabs"></div>
+
+<div class="main">
+
+  <!-- LEFT -->
+  <div class="left-panel">
+    <div>
+      <div class="deity-name-left" id="deity-name-l"></div>
+      <div class="deity-sub-left"  id="deity-sub-l"></div>
+    </div>
+    <div class="mantra-card">
+      <div class="m-skt" id="m-skt"></div>
+      <div class="m-ru"  id="m-ru"></div>
+    </div>
+    <div class="seq-title">Последовательность</div>
+    <div class="sequence-list" id="seq-list"></div>
+  </div>
+
+  <!-- CENTER -->
+  <div class="center-panel" style="position:relative;">
+    <!-- Bell (top-right of center) -->
+    <div class="bell-zone">
+      <div class="bell-btn" id="bell-btn" onclick="ringBell()">
+        <span class="bell-icon">🔔</span>
+        <span class="bell-label">Колокол</span>
+      </div>
+      <div class="bell-hint" id="bell-hint">в конце</div>
+    </div>
+
+    <!-- Shrine -->
+    <div class="shrine">
+      <div class="shrine-halo"></div>
+      <div class="deity-frame"><img class="deity-img" id="deity-img" src="" alt=""></div>
+    </div>
+
+    <!-- Altar -->
+    <div class="altar-wrap">
+      <div class="altar-surface">
+        <!-- Back row: smaller items -->
+        <div class="altar-row back-row" id="altar-back"></div>
+        <!-- Main row: water-lamp-incense fixed -->
+        <div class="altar-row main-row" id="altar-main"></div>
+        <!-- Front row -->
+        <div class="altar-row back-row" id="altar-front"></div>
+      </div>
+      <div class="altar-table-leg"></div>
+    </div>
+
+
+
+  </div>
+
+  <!-- RIGHT -->
+  <div class="right-panel">
+    <div class="step-progress">
+      <div class="step-bar-wrap"><div class="step-bar" id="step-bar" style="width:0%"></div></div>
+      <div class="step-txt" id="step-txt">0 / 0</div>
+    </div>
+    <div class="step-card" id="step-card">
+      <div class="step-badge" id="step-badge">ШАГ 1</div>
+      <div class="step-instruction" id="step-instr"></div>
+      <div class="step-accepts"  id="step-acc"></div>
+      <div class="step-hint-txt" id="step-hint"></div>
+    </div>
+    <div class="feedback" id="feedback"></div>
+    <button class="hint-btn" onclick="showHint()">💡 Подсказка</button>
+    <div class="tip-box" id="tip-box">
+      <h4>О пудже</h4>
+      <div id="tip-text">Выберите божество и следуйте последовательности подношений. Нажимайте на предметы на алтаре в правильном порядке.</div>
+    </div>
+  </div>
+
+</div>
+
+<div class="complete-overlay" id="complete-overlay">
+  <div class="complete-icon">🙏</div>
+  <div class="complete-title">ПУДЖА ЗАВЕРШЕНА</div>
+  <div class="complete-sub" id="complete-sub"></div>
+  <button class="cbtn" onclick="resetPuja()">Повторить пуджу</button>
+  <button class="cbtn gray" style="margin-top:-4px;" onclick="hideComplete()">Выбрать другое божество</button>
+</div>
+
+<script>
+// ── ITEMS ──
+const ITEMS = [
+  { id:'lamp',       emoji:'🪔',  name:'Масляная лампа' },
+  { id:'incense',    emoji:'🌬️', name:'Благовония' },
+  { id:'water',      emoji:'💧',  name:'Вода' },
+  { id:'milk',       emoji:'🥛',  name:'Молоко' },
+  { id:'yogurt',     emoji:'🥣',  name:'Йогурт' },
+  { id:'honey',      emoji:'🍯',  name:'Мёд' },
+  { id:'ghee',       emoji:'🧈',  name:'Гхи' },
+  { id:'rice',       emoji:'🍚',  name:'Рис' },
+  { id:'kumkum',     emoji:'🔴',  name:'Кумкум' },
+  { id:'turmeric',   emoji:'🟡',  name:'Куркума' },
+  { id:'sandalwood', emoji:'🌿',  name:'Сандаловая паста' },
+  { id:'flower',     emoji:'🌸',  name:'Цветок' },
+  { id:'lotus',      emoji:'🌺',  name:'Гибискус' },
+  { id:'rose',       emoji:'🌹',  name:'Роза' },
+  { id:'marigold',   emoji:'🌼',  name:'Бархатцы' },
+  { id:'leaves',     emoji:'🍃',  name:'Зелёные листья' },
+  { id:'coconut',    emoji:'🥥',  name:'Кокос' },
+  { id:'banana',     emoji:'🍌',  name:'Банан' },
+  { id:'apple',      emoji:'🍎',  name:'Яблоко' },
+  { id:'sweet',      emoji:'🍬',  name:'Сладость' },
+  { id:'fruit',      emoji:'🥭',  name:'Другой фрукт' },
+];
+
+// Altar layout: 3 rows × 7 cols = 21 items
+// Row BACK  (7): rice kumkum turmeric sandalwood flower lotus rose
+// Row MAIN  (7): yogurt honey WATER LAMP INCENSE milk ghee
+// Row FRONT (7): marigold leaves coconut banana apple sweet fruit
+const ALTAR_BACK  = ['rice','kumkum','turmeric','sandalwood','flower','lotus','rose'];
+const ALTAR_MAIN  = ['yogurt','honey','water','lamp','incense','milk','ghee'];
+const ALTAR_FRONT = ['marigold','leaves','coconut','banana','apple','sweet','fruit'];
+const FIXED = { water:'fixed-item', lamp:'lamp-item', incense:'fixed-item' };
+
+const ITEM_MAP = {};
+ITEMS.forEach(it => ITEM_MAP[it.id] = it);
+
+// ── FLOWER SHORTCUTS ──
+const F  = ['flower','lotus','rose','marigold'];
+const RF = ['rose','lotus'];
+const WF = ['flower','marigold'];
+
+function fhint(a) {
+  if (JSON.stringify(a)===JSON.stringify(F))  return 'любой цветок: 🌸🌺🌹🌼';
+  if (JSON.stringify(a)===JSON.stringify(RF)) return 'красный/гибискус: 🌹 или 🌺';
+  if (JSON.stringify(a)===JSON.stringify(WF)) return 'белый: 🌸 или 🌼';
+  return '';
+}
+
+// ── DEITY TIPS ──
+const TIPS = {
+  ganesha:   'Ганеша — сын Шивы и Парвати, слоноголовый бог. Его пуджу совершают перед началом любого важного дела. Куркума — его особый атрибут, символ чистоты.',
+  shiva:     'Шива — один из главных богов индуизма. Абхишека (омовение) водой и молоком — важнейшая часть его пуджи. Листья бильвы (зелёные листья) особенно любимы Шивой.',
+  durga:     'Дурга — богиня-воительница, форма Шакти. Красный цвет и кумкум — её символы. Кокос в индуизме символизирует разрушение эго и полную преданность.',
+  lakshmi:   'Лакшми — богиня процветания. Лотос — её главный символ, она сидит на нём. Пятница считается особым днём для её пуджи.',
+  vishnu:    'Вишну — хранитель мироздания. Листья туласи (зелёные листья) священны для Вишну — без них его пуджа неполна.',
+  lingam:    'Шива-Лингам — символ Шивы. Абхишека (омовение) совершается с водой, молоком, мёдом и гхи последовательно — это очищающий ритуал.',
+  saraswati: 'Сарасвати — богиня знания, музыки и искусств. Белый цвет символизирует чистоту знания. Рис как символ учения и питания ума.',
+  rama:      'Рама — седьмое воплощение Вишну, идеальный царь. Сандаловая паста символизирует благородство и чистоту характера.',
+  surya:     'Сурья — бог Солнца. Красные цветы и кумкум — цвет восходящего солнца. Его пуджу совершают на рассвете, лицом к востоку.',
+  chandra:   'Чандра — бог Луны. Белые подношения: молоко, белые цветы, рис — отражают его лунную природу. Понедельник — его день.',
+  mangala:   'Мангала (Марс) — планета энергии и действия. Красный цвет его атрибут. Вторник — день Мангала.',
+  budha:     'Будха (Меркурий) — планета интеллекта и общения. Зелёный цвет его атрибут. Среда — день Будха.',
+  shukra:    'Шукра (Венера) — планета красоты и любви. Белые цветы и молоко символизируют нежность. Пятница — день Шукра.',
+  shani:     'Шани (Сатурн) — планета кармы и дисциплины. Тёмные цвета его символ. Суббота — день Шани. Его пуджа снимает кармические препятствия.',
+  rahu:      'Раху — Северный лунный узел, теневая планета. Кокос — особое подношение для Раху как символ отсечения привязанностей.',
+  ketu:      'Кету — Южный лунный узел. Сандаловая паста помогает успокоить его острую энергию. Кету символизирует освобождение.',
+};
+
+// ── DEITIES DATA ──
+const IMGS = {
+  'ganesha': 'gods/ganesha.png',
+  'shiva': 'gods/shiva.png',
+  'durga': 'gods/durga.png',
+  'lakshmi': 'gods/lakshmi.png',
+  'vishnu': 'gods/vishnu.png',
+  'lingam': 'gods/lingam.png',
+  'saraswati': 'gods/saraswati.png',
+  'rama': 'gods/rama.png',
+  'surya': 'gods/surya.png',
+  'chandra': 'gods/chandra.png',
+  'mangala': 'gods/mangala.png',
+  'budha': 'gods/budha.png',
+  'shukra': 'gods/shukra.png',
+  'shani': 'gods/shani.png',
+  'rahu': 'gods/rahu-and-ketu.png',
+  'ketu': 'gods/rahu-and-ketu.png',
+};
+
+const F2  = ['flower','lotus','rose','marigold'];
+const RF2 = ['rose','lotus'];
+const WF2 = ['flower','marigold'];
+
+const DEITIES = [
+  {
+    id:'ganesha', name:'Ганеша', subtitle:'Устранение препятствий',
+    mantra:'ॐ गं गणपतये नमः', mantraRu:'Ом Гам Ганапатайе Намаха',
+    sequence:[
+      {label:'Зажгите масляную лампу',   accept:['lamp'],                    hint:''},
+      {label:'Предложите благовония',     accept:['incense'],                 hint:''},
+      {label:'Предложите воду',           accept:['water'],                   hint:''},
+      {label:'Предложите куркуму',        accept:['turmeric'],                hint:''},
+      {label:'Предложите цветок',         accept:['flower','lotus','rose','marigold'], hint:'любой цветок: 🌸🌺🌹🌼'},
+      {label:'Предложите банан',          accept:['banana'],                  hint:''},
+      {label:'Предложите сладость',       accept:['sweet'],                   hint:''},
+      {label:'Позвоните в колокольчик',   accept:['bell'],                    hint:'нажмите на колокольчик'},
+    ]
+  },
+  {
+    id:'shiva', name:'Шива', subtitle:'Повелитель Вселенной',
+    mantra:'ॐ नमः शिवाय', mantraRu:'Ом Намах Шивайя',
+    sequence:[
+      {label:'Зажгите масляную лампу',      accept:['lamp'],      hint:''},
+      {label:'Предложите благовония',        accept:['incense'],   hint:''},
+      {label:'Предложите воду',              accept:['water'],     hint:''},
+      {label:'Предложите зелёные листья',    accept:['leaves'],    hint:''},
+      {label:'Предложите сандаловую пасту',  accept:['sandalwood'],hint:''},
+      {label:'Предложите цветок',            accept:['flower','lotus','rose','marigold'], hint:'любой цветок: 🌸🌺🌹🌼'},
+      {label:'Предложите молоко',            accept:['milk'],      hint:''},
+      {label:'Предложите мёд',             accept:['honey'],       hint:''},
+      {label:'Позвоните в колокольчик',      accept:['bell'],      hint:'нажмите на колокольчик'},
+    ]
+  },
+  {
+    id:'durga', name:'Дурга', subtitle:'Непобедимая Мать-Защитница',
+    mantra:'ॐ दुं दुर्गायै नमः', mantraRu:'Ом Дум Дургайе Намаха',
+    sequence:[
+      {label:'Зажгите масляную лампу',         accept:['lamp'],    hint:''},
+      {label:'Предложите благовония',           accept:['incense'], hint:''},
+      {label:'Предложите кумкум',              accept:['kumkum'],  hint:''},
+      {label:'Предложите красный цветок (розу)', accept:['rose','lotus'], hint:'красный/гибискус: 🌹 или 🌺'},
+      {label:'Предложите кокос',               accept:['coconut'], hint:''},
+      {label:'Предложите яблоко',              accept:['apple'],   hint:''},
+      {label:'Предложите сладость',            accept:['sweet'],   hint:''},
+      {label:'Позвоните в колокольчик',        accept:['bell'],    hint:'нажмите на колокольчик'},
+    ]
+  },
+  {
+    id:'lakshmi', name:'Лакшми', subtitle:'Богиня процветания',
+    mantra:'ॐ श्रीं महालक्ष्म्यै नमः', mantraRu:'Ом Шрим Маха Лакшмийей Намаха',
+    sequence:[
+      {label:'Зажгите масляную лампу',  accept:['lamp'],    hint:''},
+      {label:'Предложите благовония',    accept:['incense'], hint:''},
+      {label:'Предложите воду',          accept:['water'],   hint:''},
+      {label:'Предложите кумкум',       accept:['kumkum'],  hint:''},
+      {label:'Предложите гибискус',         accept:['lotus'],   hint:''},
+      {label:'Предложите кокос',         accept:['coconut'], hint:''},
+      {label:'Предложите сладость',      accept:['sweet'],   hint:''},
+      {label:'Предложите банан',         accept:['banana'],  hint:''},
+      {label:'Позвоните в колокольчик',  accept:['bell'],    hint:'нажмите на колокольчик'},
+    ]
+  },
+  {
+    id:'vishnu', name:'Вишну', subtitle:'Хранитель Вселенной',
+    mantra:'ॐ नमो नारायणाय', mantraRu:'Ом Намо Нараянайа',
+    sequence:[
+      {label:'Зажгите масляную лампу',      accept:['lamp'],        hint:''},
+      {label:'Предложите благовония',        accept:['incense'],     hint:''},
+      {label:'Предложите воду',              accept:['water'],       hint:''},
+      {label:'Предложите зелёные листья',    accept:['leaves'],      hint:''},
+      {label:'Предложите сандаловую пасту',  accept:['sandalwood'],  hint:''},
+      {label:'Предложите цветок',            accept:['flower','lotus','rose','marigold'], hint:'любой цветок: 🌸🌺🌹🌼'},
+      {label:'Предложите банан',             accept:['banana'],      hint:''},
+      {label:'Предложите сладость',          accept:['sweet'],       hint:''},
+      {label:'Позвоните в колокольчик',      accept:['bell'],        hint:'нажмите на колокольчик'},
+    ]
+  },
+  {
+    id:'lingam', name:'Шива-Лингам', subtitle:'Абхишека пуджа',
+    mantra:'ॐ नमः शिवाय', mantraRu:'Ом Намах Шивайя',
+    sequence:[
+      {label:'Омойте водой',                accept:['water'],       hint:''},
+      {label:'Омойте молоком',              accept:['milk'],        hint:''},
+      {label:'Предложите мёд',             accept:['honey'],        hint:''},
+      {label:'Предложите гхи',              accept:['ghee'],        hint:''},
+      {label:'Снова омойте водой',          accept:['water'],       hint:''},
+      {label:'Предложите зелёные листья',   accept:['leaves'],      hint:''},
+      {label:'Предложите цветок',           accept:['flower','lotus','rose','marigold'], hint:'любой цветок: 🌸🌺🌹🌼'},
+      {label:'Зажгите благовония',          accept:['incense'],     hint:''},
+      {label:'Зажгите масляную лампу',      accept:['lamp'],        hint:''},
+      {label:'Позвоните в колокольчик',     accept:['bell'],        hint:'нажмите на колокольчик'},
+    ]
+  },
+  {
+    id:'saraswati', name:'Сарасвати', subtitle:'Богиня знания и искусства',
+    mantra:'ॐ ऐं सरस्वत्यै नमः', mantraRu:'Ом Аим Сарасватийей Намаха',
+    sequence:[
+      {label:'Зажгите масляную лампу',   accept:['lamp'],    hint:''},
+      {label:'Предложите благовония',     accept:['incense'], hint:''},
+      {label:'Предложите воду',           accept:['water'],   hint:''},
+      {label:'Предложите белый цветок',   accept:['flower','marigold'], hint:'белый: 🌸 или 🌼'},
+      {label:'Предложите рис',            accept:['rice'],    hint:''},
+      {label:'Предложите молоко',         accept:['milk'],    hint:''},
+      {label:'Предложите яблоко',         accept:['apple'],   hint:''},
+      {label:'Позвоните в колокольчик',   accept:['bell'],    hint:'нажмите на колокольчик'},
+    ]
+  },
+  {
+    id:'rama', name:'Рама', subtitle:'Воплощение Дхармы',
+    mantra:'श्री राम जय राम जय जय राम', mantraRu:'Шри Рам Джай Рам Джай Джай Рам',
+    sequence:[
+      {label:'Зажгите масляную лампу',      accept:['lamp'],        hint:''},
+      {label:'Предложите благовония',        accept:['incense'],     hint:''},
+      {label:'Предложите воду',              accept:['water'],       hint:''},
+      {label:'Предложите цветок',            accept:['flower','lotus','rose','marigold'], hint:'любой цветок: 🌸🌺🌹🌼'},
+      {label:'Предложите сандаловую пасту',  accept:['sandalwood'],  hint:''},
+      {label:'Предложите банан',             accept:['banana'],      hint:''},
+      {label:'Предложите сладость',          accept:['sweet'],       hint:''},
+      {label:'Позвоните в колокольчик',      accept:['bell'],        hint:'нажмите на колокольчик'},
+    ]
+  },
+  {
+    id:'surya', name:'Сурья', subtitle:'Бог Солнца',
+    mantra:'ॐ सूर्याय नमः', mantraRu:'Ом Сурьяйа Намаха',
+    sequence:[
+      {label:'Зажгите масляную лампу',   accept:['lamp'],    hint:''},
+      {label:'Предложите воду',           accept:['water'],   hint:''},
+      {label:'Предложите красный цветок', accept:['rose','lotus'], hint:'красный/гибискус: 🌹 или 🌺'},
+      {label:'Предложите кумкум',        accept:['kumkum'],  hint:''},
+      {label:'Предложите яблоко',         accept:['apple'],   hint:''},
+      {label:'Предложите сладость',       accept:['sweet'],   hint:''},
+      {label:'Позвоните в колокольчик',   accept:['bell'],    hint:'нажмите на колокольчик'},
+    ]
+  },
+  {
+    id:'chandra', name:'Чандра', subtitle:'Бог Луны',
+    mantra:'ॐ चन्द्राय नमः', mantraRu:'Ом Чандрайа Намаха',
+    sequence:[
+      {label:'Зажгите масляную лампу',  accept:['lamp'],  hint:''},
+      {label:'Предложите воду',          accept:['water'], hint:''},
+      {label:'Предложите молоко',        accept:['milk'],  hint:''},
+      {label:'Предложите белый цветок',  accept:['flower','marigold'], hint:'белый: 🌸 или 🌼'},
+      {label:'Предложите рис',           accept:['rice'],  hint:''},
+      {label:'Предложите сладость',      accept:['sweet'], hint:''},
+      {label:'Позвоните в колокольчик',  accept:['bell'],  hint:'нажмите на колокольчик'},
+    ]
+  },
+  {
+    id:'mangala', name:'Мангала', subtitle:'Планета Марс',
+    mantra:'ॐ मङ्गलाय नमः', mantraRu:'Ом Мангалайа Намаха',
+    sequence:[
+      {label:'Зажгите масляную лампу',   accept:['lamp'],     hint:''},
+      {label:'Предложите благовония',     accept:['incense'],  hint:''},
+      {label:'Предложите воду',           accept:['water'],    hint:''},
+      {label:'Предложите красный цветок', accept:['rose','lotus'], hint:'красный/гибискус: 🌹 или 🌺'},
+      {label:'Предложите куркуму',        accept:['turmeric'], hint:''},
+      {label:'Предложите кокос',          accept:['coconut'],  hint:''},
+      {label:'Предложите сладость',       accept:['sweet'],    hint:''},
+      {label:'Позвоните в колокольчик',   accept:['bell'],     hint:'нажмите на колокольчик'},
+    ]
+  },
+  {
+    id:'budha', name:'Будха', subtitle:'Планета Меркурий',
+    mantra:'ॐ बुधाय नमः', mantraRu:'Ом Будхайа Намаха',
+    sequence:[
+      {label:'Зажгите масляную лампу',   accept:['lamp'],   hint:''},
+      {label:'Предложите воду',           accept:['water'],  hint:''},
+      {label:'Предложите зелёные листья', accept:['leaves'], hint:''},
+      {label:'Предложите цветок',         accept:['flower','lotus','rose','marigold'], hint:'любой цветок: 🌸🌺🌹🌼'},
+      {label:'Предложите яблоко',         accept:['apple'],  hint:''},
+      {label:'Предложите сладость',       accept:['sweet'],  hint:''},
+      {label:'Позвоните в колокольчик',   accept:['bell'],   hint:'нажмите на колокольчик'},
+    ]
+  },
+  {
+    id:'shukra', name:'Шукра', subtitle:'Планета Венера',
+    mantra:'ॐ शुक्राय नमः', mantraRu:'Ом Шукрайа Намаха',
+    sequence:[
+      {label:'Зажгите масляную лампу',      accept:['lamp'],        hint:''},
+      {label:'Предложите благовония',        accept:['incense'],     hint:''},
+      {label:'Предложите белый цветок',      accept:['flower','marigold'], hint:'белый: 🌸 или 🌼'},
+      {label:'Предложите сандаловую пасту',  accept:['sandalwood'],  hint:''},
+      {label:'Предложите молоко',            accept:['milk'],        hint:''},
+      {label:'Предложите сладость',          accept:['sweet'],       hint:''},
+      {label:'Позвоните в колокольчик',      accept:['bell'],        hint:'нажмите на колокольчик'},
+    ]
+  },
+  {
+    id:'shani', name:'Шани', subtitle:'Планета Сатурн',
+    mantra:'ॐ शनैश्चराय नमः', mantraRu:'Ом Шанайшчарайа Намаха',
+    sequence:[
+      {label:'Зажгите масляную лампу',   accept:['lamp'],    hint:''},
+      {label:'Предложите благовония',     accept:['incense'], hint:''},
+      {label:'Предложите воду',           accept:['water'],   hint:''},
+      {label:'Предложите зелёные листья', accept:['leaves'],  hint:''},
+      {label:'Предложите цветок',         accept:['flower','lotus','rose','marigold'], hint:'тёмный или любой: 🌸🌺🌹🌼'},
+      {label:'Предложите кокос',          accept:['coconut'], hint:''},
+      {label:'Предложите сладость',       accept:['sweet'],   hint:''},
+      {label:'Позвоните в колокольчик',   accept:['bell'],    hint:'нажмите на колокольчик'},
+    ]
+  },
+  {
+    id:'rahu', name:'Раху', subtitle:'Северный лунный узел',
+    mantra:'ॐ रां राहवे नमः', mantraRu:'Ом Рам Рахаве Намаха',
+    sequence:[
+      {label:'Зажгите масляную лампу',  accept:['lamp'],    hint:''},
+      {label:'Предложите благовония',    accept:['incense'], hint:''},
+      {label:'Предложите воду',          accept:['water'],   hint:''},
+      {label:'Предложите кокос',         accept:['coconut'], hint:''},
+      {label:'Предложите цветок',        accept:['flower','lotus','rose','marigold'], hint:'любой цветок: 🌸🌺🌹🌼'},
+      {label:'Предложите яблоко',        accept:['apple'],   hint:''},
+      {label:'Предложите сладость',      accept:['sweet'],   hint:''},
+      {label:'Позвоните в колокольчик',  accept:['bell'],    hint:'нажмите на колокольчик'},
+    ]
+  },
+  {
+    id:'ketu', name:'Кету', subtitle:'Южный лунный узел',
+    mantra:'ॐ कें केतवे नमः', mantraRu:'Ом Кем Кетаве Намаха',
+    sequence:[
+      {label:'Зажгите масляную лампу',      accept:['lamp'],        hint:''},
+      {label:'Предложите благовония',        accept:['incense'],     hint:''},
+      {label:'Предложите воду',              accept:['water'],       hint:''},
+      {label:'Предложите сандаловую пасту',  accept:['sandalwood'],  hint:''},
+      {label:'Предложите цветок',            accept:['flower','lotus','rose','marigold'], hint:'любой цветок: 🌸🌺🌹🌼'},
+      {label:'Предложите кокос',             accept:['coconut'],     hint:''},
+      {label:'Предложите сладость',          accept:['sweet'],       hint:''},
+      {label:'Позвоните в колокольчик',      accept:['bell'],        hint:'нажмите на колокольчик'},
+    ]
+  },
+];
+
+// ── STATE ──
+let cur = DEITIES[0];
+let step = 0;
+
+// ── TABS ──
+const TAB_ICONS = {
+  ganesha:'🐘', shiva:'🌙', durga:'⚔️', lakshmi:'🌸', vishnu:'💛',
+  lingam:'🔱', saraswati:'🎵', rama:'🏹', surya:'☀️', chandra:'🌕',
+  mangala:'🔴', budha:'💚', shukra:'⬜', shani:'🪐', rahu:'🌑', ketu:'🌒'
+};
+
+function initTabs() {
+  const tabs = document.getElementById('deity-tabs');
+  DEITIES.forEach((d, i) => {
+    const btn = document.createElement('button');
+    btn.className = 'tab-btn' + (i===0?' active':'');
+    btn.id = 'tab-' + d.id;
+    btn.innerHTML = `<span class="tab-icon">${TAB_ICONS[d.id]||'🌟'}</span><span class="tab-name">${d.name}</span>`;
+    btn.onclick = () => selectDeity(d.id);
+    tabs.appendChild(btn);
+  });
+}
+
+function selectDeity(id) {
+  cur = DEITIES.find(d => d.id===id);
+  step = 0;
+  document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+  const tb = document.getElementById('tab-'+id);
+  tb.classList.add('active');
+  tb.scrollIntoView({behavior:'smooth', block:'nearest', inline:'center'});
+  renderAll();
+  document.getElementById('complete-overlay').classList.remove('show');
+}
+
+function renderAll() {
+  // Deity
+  document.getElementById('deity-img').src = IMGS[cur.id] || '';
+  document.getElementById('deity-name-l').textContent = cur.name.toUpperCase();
+  document.getElementById('deity-sub-l').textContent = cur.subtitle;
+  document.getElementById('m-skt').textContent = cur.mantra;
+  document.getElementById('m-ru').textContent = cur.mantraRu;
+  document.getElementById('tip-text').textContent = TIPS[cur.id] || '';
+  renderAltarRows();
+  renderSeq();
+  renderStepCard();
+  setBell(false);
+  setFeedback('','');
+}
+
+// ── ALTAR ROWS ──
+function renderAltarRows() {
+  buildRow('altar-back',  ALTAR_BACK);
+  buildRow('altar-main',  ALTAR_MAIN);
+  buildRow('altar-front', ALTAR_FRONT);
+}
+
+function buildRow(rowId, ids) {
+  const row = document.getElementById(rowId);
+  row.innerHTML = '';
+  ids.forEach(id => {
+    const it = ITEM_MAP[id];
+    const card = document.createElement('div');
+    const extra = FIXED[id] || '';
+    card.className = 'item-card ' + extra;
+    card.id = 'ic-' + id;
+    card.title = it.name;
+    card.innerHTML = `<div class="item-emoji">${it.emoji}</div><div class="item-name">${it.name}</div>`;
+    card.onclick = () => offerItem(it, card);
+    row.appendChild(card);
+  });
+}
+
+// ── SEQUENCE LIST ──
+function renderSeq() {
+  const el = document.getElementById('seq-list');
+  el.innerHTML = '';
+  cur.sequence.forEach((s, i) => {
+    const div = document.createElement('div');
+    const state = i < step ? 'done' : i===step ? 'current' : '';
+    div.className = 'seq-step ' + state;
+    const numContent = i < step ? '✓' : (i+1);
+    let emoji = '';
+    if (s.accept[0] === 'bell') emoji = '🔔';
+    else {
+      const it = ITEM_MAP[s.accept[0]];
+      emoji = it ? it.emoji : '';
+    }
+    div.innerHTML = `<div class="sn">${numContent}</div><span class="se">${emoji}</span><span>${s.label}</span>`;
+    el.appendChild(div);
+  });
+}
+
+// ── STEP CARD ──
+function renderStepCard() {
+  const total = cur.sequence.length;
+  const pct = total > 0 ? (step / total * 100) : 0;
+  document.getElementById('step-bar').style.width = pct + '%';
+  document.getElementById('step-txt').textContent = `${step} / ${total}`;
+
+  const card = document.getElementById('step-card');
+  card.className = 'step-card';
+
+  if (step >= total) return;
+  const s = cur.sequence[step];
+  document.getElementById('step-badge').textContent = `ШАГ ${step+1} из ${total}`;
+  document.getElementById('step-instr').textContent = s.label;
+
+  if (s.accept[0] === 'bell') {
+    document.getElementById('step-acc').textContent = '🔔';
+    document.getElementById('step-hint').textContent = 'нажмите на колокольчик ниже';
+    setBell(true);
+  } else {
+    const emojis = s.accept.map(id => ITEM_MAP[id]?.emoji || '').join(' ');
+    document.getElementById('step-acc').textContent = emojis;
+    document.getElementById('step-hint').textContent = s.hint ? '(' + s.hint + ')' : '';
+    setBell(false);
+  }
+}
+
+// ── OFFER ITEM ──
+function offerItem(item, cardEl) {
+  if (step >= cur.sequence.length) return;
+  const s = cur.sequence[step];
+  if (s.accept[0] === 'bell') {
+    setFeedback('err', '🔔 Сначала позвоните в колокольчик!');
+    return;
+  }
+  const ok = s.accept.includes(item.id);
+  if (ok) {
+    flyToDeity(item.emoji, cardEl);
+    setTimeout(() => blessDeity(), 550);
+    setFeedback('ok', '✓ ' + item.emoji + ' ' + item.name + ' — принято');
+    flashCard('right');
+    step++;
+    if (step >= cur.sequence.length) {
+      setTimeout(() => showComplete(), 900);
+    } else {
+      setTimeout(() => { renderSeq(); renderStepCard(); setFeedback('',''); }, 900);
+    }
+  } else {
+    cardEl.classList.add('wrong-flash');
+    setTimeout(() => cardEl.classList.remove('wrong-flash'), 500);
+    flashCard('wrong');
+    const need = s.accept.map(id => ITEM_MAP[id]?.emoji||'').join('');
+    setFeedback('err', '✗ Не то. Нужно: ' + need + (s.hint ? ' ('+s.hint+')' : ''));
+  }
+}
+
+function flashCard(cls) {
+  const card = document.getElementById('step-card');
+  card.classList.add('shake', cls);
+  setTimeout(() => card.classList.remove('shake', cls), 800);
+}
+
+// ── BELL ──
+function setBell(active) {
+  const btn = document.getElementById('bell-btn');
+  const hint = document.getElementById('bell-hint');
+  if (active) {
+    btn.classList.add('active');
+    hint.textContent = '🔔 Пора звонить!';
+    hint.style.color = '#df2227';
+    hint.style.fontWeight = '700';
+  } else {
+    btn.classList.remove('active');
+    hint.textContent = 'Позвоните в колокольчик в завершение пуджи';
+    hint.style.color = '#aaa';
+    hint.style.fontWeight = 'normal';
+  }
+}
+
+function ringBell() {
+  const btn = document.getElementById('bell-btn');
+  if (!btn.classList.contains('active')) return;
+
+  // Animation
+  btn.classList.add('ringing');
+  setTimeout(() => btn.classList.remove('ringing'), 600);
+
+  // Sound
+  playBellSound();
+
+  // Advance step
+  step++;
+  renderSeq();
+  const total = cur.sequence.length;
+  document.getElementById('step-bar').style.width = (step/total*100) + '%';
+  document.getElementById('step-txt').textContent = `${step} / ${total}`;
+  setFeedback('ok', '🔔 Колокол звонит — пуджа принята!');
+  setBell(false);
+  setTimeout(() => showComplete(), 1800);
+}
+
+function playBellSound() {
+  try {
+    const ac = new (window.AudioContext || window.webkitAudioContext)();
+    const parts = [
+      {f:523.25, g:0.5,  d:4.0},
+      {f:1046.5, g:0.25, d:3.0},
+      {f:1568,   g:0.12, d:2.0},
+      {f:659.25, g:0.18, d:3.5},
+      {f:783.99, g:0.10, d:2.5},
+    ];
+    parts.forEach(p => {
+      const osc = ac.createOscillator();
+      const g   = ac.createGain();
+      osc.connect(g); g.connect(ac.destination);
+      osc.type = 'sine';
+      osc.frequency.value = p.f;
+      g.gain.setValueAtTime(p.g, ac.currentTime);
+      g.gain.exponentialRampToValueAtTime(0.0001, ac.currentTime + p.d);
+      osc.start(ac.currentTime);
+      osc.stop(ac.currentTime + p.d);
+    });
+  } catch(e) {}
+}
+
+// ── HINT ──
+function showHint() {
+  if (step >= cur.sequence.length) return;
+  const s = cur.sequence[step];
+  if (s.accept[0] === 'bell') {
+    const btn = document.getElementById('bell-btn');
+    btn.classList.add('ringing');
+    setTimeout(() => btn.classList.remove('ringing'), 600);
+    setFeedback('ok', '💡 Нажмите на колокольчик!');
+    return;
+  }
+  s.accept.forEach(id => {
+    const card = document.getElementById('ic-' + id);
+    if (card) {
+      card.classList.add('highlight');
+      setTimeout(() => card.classList.remove('highlight'), 2200);
+    }
+  });
+  setFeedback('ok', '💡 Выберите подсвеченный предмет на алтаре');
+}
+
+// ── FLY ──
+function flyToDeity(emoji, fromEl) {
+  const from = fromEl.getBoundingClientRect();
+  const img  = document.getElementById('deity-img').getBoundingClientRect();
+  const p = document.createElement('div');
+  p.className = 'fly-p';
+  p.textContent = emoji;
+  p.style.cssText = `left:${from.left+from.width/2-14}px;top:${from.top+from.height/2-14}px;opacity:1;`;
+  document.body.appendChild(p);
+  requestAnimationFrame(() => requestAnimationFrame(() => {
+    p.style.left = (img.left+img.width/2-14) + 'px';
+    p.style.top  = (img.top+img.height/2-14) + 'px';
+    p.style.opacity = '0';
+    p.style.transform = 'scale(0.3)';
+  }));
+  setTimeout(() => p.remove(), 800);
+}
+
+function blessDeity() {
+  const img = document.getElementById('deity-img');
+  img.classList.add('bless');
+  setTimeout(() => img.classList.remove('bless'), 700);
+}
+
+// ── FEEDBACK ──
+function setFeedback(type, msg) {
+  const el = document.getElementById('feedback');
+  el.className = 'feedback' + (type ? ' '+type : '');
+  el.textContent = msg;
+}
+
+// ── COMPLETE ──
+function showComplete() {
+  document.getElementById('step-bar').style.width = '100%';
+  const total = cur.sequence.length;
+  document.getElementById('step-txt').textContent = `${total} / ${total}`;
+  document.getElementById('complete-sub').textContent =
+    `Пуджа ${cur.name} завершена! Все ${total} шагов выполнены в правильном порядке. Пусть благословение пребудет с вами! 🙏`;
+  document.getElementById('complete-overlay').classList.add('show');
+  const colors = ['#df2227','#ef5024','#f5c000','#4a9a4a','#4a4adf','#ff88aa'];
+  for (let i=0; i<50; i++) {
+    setTimeout(() => {
+      const c = document.createElement('div');
+      c.className = 'cpiece';
+      c.style.cssText = `left:${Math.random()*100}vw;top:0;background:${colors[Math.floor(Math.random()*colors.length)]};animation-delay:${Math.random()*0.5}s;animation-duration:${2+Math.random()*1.5}s;`;
+      document.body.appendChild(c);
+      setTimeout(() => c.remove(), 3500);
+    }, i*50);
+  }
+}
+
+function resetPuja() {
+  step = 0;
+  document.getElementById('complete-overlay').classList.remove('show');
+  renderAll();
+}
+function hideComplete() {
+  step = 0;
+  document.getElementById('complete-overlay').classList.remove('show');
+  renderAll();
+}
+
+// ── START ──
+initTabs();
+selectDeity('ganesha');
+</script>
+</body>
+</html>

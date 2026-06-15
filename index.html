@@ -113,28 +113,33 @@ header .om { font-size: 1.5rem; }
 /* CENTER PANEL */
 .center-panel {
   display: flex; flex-direction: column;
-  align-items: center;
+  align-items: center; justify-content: center;
   overflow: hidden;
   background: #fff;
-  padding: 8px 10px 6px;
-  gap: 6px;
+  padding: 14px 18px 12px;
+  gap: 22px;
 }
 
 /* Shrine */
 .shrine {
-  display: flex; flex-direction: column; align-items: center;
+  display: flex; flex-direction: row;
+  align-items: center; justify-content: center;
   flex-shrink: 0;
   position: relative;
-  padding-top: 18px;
   width: 100%;
+}
+/* equal side gutters keep deity centered; bell sits centered in the right gutter */
+.shrine-side {
+  flex: 1 1 0; min-width: 0;
+  display: flex; align-items: center; justify-content: center;
 }
 .shrine-halo {
   position: absolute;
-  top: 14px; left: 50%; transform: translateX(-50%);
-  width: 180px; height: 180px;
+  top: 50%; left: 50%; transform: translate(-50%,-50%);
+  width: 220px; height: 220px;
   border-radius: 50%;
   background: radial-gradient(circle, rgba(239,80,36,0.1) 0%, transparent 70%);
-  pointer-events: none;
+  pointer-events: none; z-index: 0;
 }
 /* Gold frame around deity */
 .deity-frame {
@@ -169,7 +174,7 @@ header .om { font-size: 1.5rem; }
   z-index: 3; line-height: 1;
 }
 .deity-img {
-  height: 165px;
+  height: 180px;
   width: auto;
   object-fit: contain;
   display: block;
@@ -274,10 +279,8 @@ header .om { font-size: 1.5rem; }
 .item-emoji { font-size: 1.4rem; line-height: 1; }
 .item-name  { font-size: 0.52rem; color: #6b4a10; line-height: 1.2; text-align: center; }
 
-/* BELL - top-right of shrine */
+/* BELL - centered in the right gutter, beside the deity image */
 .bell-zone {
-  position: absolute;
-  top: 14px; right: 14px;
   display: flex; flex-direction: column; align-items: center;
   gap: 4px; z-index: 20;
 }
@@ -439,6 +442,90 @@ header .om { font-size: 1.5rem; }
 }
 ::-webkit-scrollbar { width: 4px; }
 ::-webkit-scrollbar-thumb { background: #ddd; border-radius: 3px; }
+
+/* ===================== RESPONSIVE ===================== */
+
+/* TABLET — compress side panels */
+@media (max-width: 900px) {
+  .main { grid-template-columns: 175px 1fr 185px; }
+  .deity-img { height: 155px; }
+  .left-panel, .right-panel { padding: 10px 8px; gap: 8px; }
+  .center-panel { padding: 12px 12px 10px; gap: 16px; }
+  .item-emoji { font-size: 1.25rem; }
+  .item-name  { font-size: 0.5rem; }
+  .seq-step   { font-size: 0.7rem; }
+}
+
+/* MOBILE PORTRAIT — single scrollable column, altar right under the step */
+@media (max-width: 600px) {
+  body { height: auto; min-height: 100vh; overflow-y: auto; }
+  .main {
+    display: flex; flex-direction: column;
+    height: auto; overflow: visible; flex: none;
+  }
+  /* unwrap center & right panels so the altar can sit between step and reference */
+  .center-panel, .right-panel { display: contents; }
+  .shrine        { order: 1; width: 100%; padding: 16px 10px 4px; background: #fff; }
+  .step-progress { order: 2; margin: 6px 14px 0; }
+  .step-card     { order: 3; margin: 0 14px; }
+  .feedback      { order: 4; margin: 0 14px; }
+  .altar-wrap    { order: 5; padding: 4px 12px 12px; background: #fff; }
+  .hint-btn      { order: 6; align-self: center; margin: 2px 0 8px; }
+  .tip-box       { order: 7; margin: 0 14px 14px; }
+  .left-panel    { order: 8; border-right: none; border-top: 1px solid #eee; }
+  .tip-box, .sequence-list { flex: none; overflow: visible; max-height: none; }
+  .deity-img { height: 160px; }
+  .item-emoji { font-size: 1.55rem; }
+  .item-name  { font-size: 0.56rem; }
+  .altar-row  { gap: 6px; margin-bottom: 6px; }
+  header h1   { font-size: 1.05rem; letter-spacing: 2px; }
+}
+
+/* MOBILE LANDSCAPE — short height, use width, fit without overlap */
+@media (orientation: landscape) and (max-height: 520px) {
+  header { padding: 4px 14px; }
+  header h1 { font-size: 0.95rem; letter-spacing: 2px; }
+  header .om { font-size: 1.15rem; }
+  .deity-tabs { }
+  .tab-btn { padding: 4px 9px; }
+  .tab-btn .tab-icon { font-size: 0.95rem; }
+  .tab-btn .tab-name { font-size: 0.56rem; }
+  .main { grid-template-columns: 148px 1fr 162px; }
+  .left-panel, .right-panel { padding: 7px 6px; gap: 6px; }
+  .center-panel { padding: 6px 10px 4px; gap: 8px; }
+  .deity-img { height: 108px; }
+  .deity-frame { padding: 5px; }
+  .shrine-halo { width: 140px; height: 140px; }
+  .mantra-card { padding: 6px 8px; border-radius: 8px; }
+  .m-skt { font-size: 0.72rem; line-height: 1.4; }
+  .m-ru  { font-size: 0.58rem; }
+  .deity-name-left { font-size: 0.82rem; }
+  .deity-sub-left  { font-size: 0.6rem; margin-bottom: 4px; }
+  .seq-title { font-size: 0.56rem; margin-bottom: 4px; }
+  .seq-step { font-size: 0.62rem; padding: 2px 4px; gap: 5px; }
+  .sn { min-width: 16px; height: 16px; font-size: 0.55rem; }
+  .se { font-size: 0.8rem; }
+  .altar-surface { padding: 7px 8px 5px; border-radius: 12px 12px 6px 6px; }
+  .altar-row { gap: 4px; margin-bottom: 4px; }
+  .item-card { padding: 3px 2px; border-radius: 6px; }
+  .item-emoji { font-size: 1.05rem; }
+  .item-name  { font-size: 0.46rem; }
+  .altar-table-leg { height: 13px; margin: 0 24px; }
+  .bell-btn { width: 42px; height: 42px; }
+  .bell-icon { font-size: 1.15rem; }
+  .bell-label { font-size: 0.45rem; }
+  .bell-hint { font-size: 0.5rem; max-width: 48px; }
+  .step-progress { gap: 6px; }
+  .step-card { padding: 8px 10px; border-radius: 10px; }
+  .step-badge { font-size: 0.54rem; margin-bottom: 4px; padding: 1px 8px; }
+  .step-instruction { font-size: 0.8rem; }
+  .step-accepts { font-size: 1rem; margin-top: 3px; }
+  .step-hint-txt { font-size: 0.62rem; }
+  .feedback { font-size: 0.72rem; min-height: 16px; }
+  .hint-btn { font-size: 0.64rem; padding: 4px 11px; }
+  .tip-box { font-size: 0.66rem; padding: 7px; line-height: 1.45; }
+  .tip-box h4 { font-size: 0.6rem; margin-bottom: 4px; }
+}
 </style>
 </head>
 <body>
@@ -468,20 +555,21 @@ header .om { font-size: 1.5rem; }
   </div>
 
   <!-- CENTER -->
-  <div class="center-panel" style="position:relative;">
-    <!-- Bell (top-right of center) -->
-    <div class="bell-zone">
-      <div class="bell-btn" id="bell-btn" onclick="ringBell()">
-        <span class="bell-icon">🔔</span>
-        <span class="bell-label">Колокол</span>
-      </div>
-      <div class="bell-hint" id="bell-hint">в конце</div>
-    </div>
-
-    <!-- Shrine -->
+  <div class="center-panel">
+    <!-- Shrine: [gutter] [deity] [gutter+bell] -->
     <div class="shrine">
       <div class="shrine-halo"></div>
+      <div class="shrine-side"></div>
       <div class="deity-frame"><img class="deity-img" id="deity-img" src="" alt=""></div>
+      <div class="shrine-side">
+        <div class="bell-zone">
+          <div class="bell-btn" id="bell-btn" onclick="ringBell()">
+            <span class="bell-icon">🔔</span>
+            <span class="bell-label">Колокол</span>
+          </div>
+          <div class="bell-hint" id="bell-hint">в конце</div>
+        </div>
+      </div>
     </div>
 
     <!-- Altar -->

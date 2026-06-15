@@ -553,6 +553,124 @@ header .om { font-size: 1.5rem; }
   .tip-box { font-size: 0.66rem; padding: 7px; line-height: 1.45; }
   .tip-box h4 { font-size: 0.6rem; margin-bottom: 4px; }
 }
+
+/* ===== Натараджа — особое сияние и акцент ===== */
+.tab-btn.tab-special { background: linear-gradient(135deg, #fff6e0, #ffe6a8); }
+.tab-btn.tab-special .tab-icon { animation: star-twinkle 1.8s ease-in-out infinite; }
+.tab-btn.tab-special.active { background: linear-gradient(135deg, #ffe6a8, #ffd470); border-bottom-color: #c8922a; }
+.tab-btn.tab-special.active .tab-name { color: #8a5a10; }
+@keyframes star-twinkle {
+  0%,100% { transform: scale(1); opacity: 0.85; }
+  50% { transform: scale(1.3); opacity: 1; }
+}
+.shrine.radiant .shrine-halo {
+  width: 300px; height: 300px;
+  background: radial-gradient(circle, rgba(255,205,75,0.42) 0%, rgba(255,185,55,0.16) 45%, transparent 72%);
+  animation: radiant-pulse 2.8s ease-in-out infinite;
+}
+@keyframes radiant-pulse {
+  0%,100% { opacity: 0.7; transform: translate(-50%,-50%) scale(1); }
+  50%     { opacity: 1;   transform: translate(-50%,-50%) scale(1.14); }
+}
+.shrine.radiant .deity-frame { animation: frame-shine 3s ease-in-out infinite; }
+@keyframes frame-shine {
+  0%,100% {
+    box-shadow: 0 0 0 2px #8a5a10, 0 0 0 4px #e8c840, 0 0 0 6px #8a5a10,
+                0 6px 24px rgba(0,0,0,0.25), 0 0 26px rgba(255,210,80,0.55);
+  }
+  50% {
+    box-shadow: 0 0 0 2px #8a5a10, 0 0 0 4px #f7da66, 0 0 0 6px #8a5a10,
+                0 6px 30px rgba(0,0,0,0.25), 0 0 54px rgba(255,216,95,0.97);
+  }
+}
+/* rotating golden rays behind the deity */
+.shrine.radiant::before {
+  content: '';
+  position: absolute;
+  left: 50%; top: 46%;
+  width: 340px; height: 340px;
+  transform: translate(-50%,-50%);
+  background: repeating-conic-gradient(from 0deg,
+      rgba(255,210,90,0.20) 0deg 6deg, transparent 6deg 18deg);
+  border-radius: 50%;
+  pointer-events: none; z-index: 0;
+  animation: ray-spin 26s linear infinite;
+}
+@keyframes ray-spin { to { transform: translate(-50%,-50%) rotate(360deg); } }
+
+/* ===================== РАЗДЕЛЫ / НАВИГАЦИЯ ===================== */
+.topnav{ display:flex; gap:6px; padding:6px 12px; background:#fff; border-bottom:1px solid #eee; flex-shrink:0; justify-content:center; flex-wrap:wrap; }
+.nav-btn{ border:none; background:#f5f5f5; color:#777; font-family:Arial,sans-serif; font-size:0.82rem; font-weight:700; padding:7px 16px; border-radius:20px; cursor:pointer; transition:all .2s; }
+.nav-btn:hover{ background:#ffe9e2; color:#ef5024; }
+.nav-btn.active{ background:linear-gradient(135deg,#df2227,#ef5024); color:#fff; }
+.view[hidden]{ display:none !important; }
+#view-practice{ display:flex; flex-direction:column; flex:1; min-height:0; }
+#view-calendar, #view-stats{ display:block; }
+body.scroll-view{ height:auto; min-height:100vh; overflow-y:auto; }
+.page{ max-width:920px; margin:0 auto; padding:18px 16px 44px; }
+.page-title{ color:#df2227; font-size:1.4rem; letter-spacing:1px; margin-bottom:14px; }
+.page-subtitle{ color:#ef5024; font-size:1.05rem; margin:22px 0 10px; }
+
+/* ===================== СТЕППЕР ===================== */
+.stepper{ display:flex; align-items:center; justify-content:center; flex-wrap:wrap; gap:0; margin-top:12px; padding:0 8px; max-width:100%; }
+.stepper .st{ display:flex; align-items:center; }
+.stepper .st-dot{ width:26px; height:26px; border-radius:50%; background:#f0f0f0; color:#aaa; border:2px solid #e3e3e3; display:flex; align-items:center; justify-content:center; font-size:0.72rem; font-weight:700; transition:all .3s; }
+.stepper .st-line{ width:16px; height:3px; background:#e3e3e3; transition:all .3s; }
+.stepper .st-line.done{ background:#ef5024; }
+.stepper .st.done .st-dot{ background:#ef5024; border-color:#ef5024; color:#fff; }
+.stepper .st.current .st-dot{ background:#fff; border-color:#df2227; color:#df2227; transform:scale(1.14); box-shadow:0 0 0 3px rgba(223,34,39,0.16); }
+.stepper .st.future .st-dot{ opacity:0.5; }
+.step-meaning{ font-size:0.72rem; color:#9a7a5a; margin-top:5px; font-style:italic; }
+
+/* ===================== КАЛЕНДАРЬ ===================== */
+.today-card{ border:1px solid #f0dcd0; border-radius:14px; padding:16px 18px; background:linear-gradient(180deg,#fff8f4,#fff); box-shadow:0 2px 10px rgba(223,34,39,0.06); }
+.today-date{ font-size:1.05rem; font-weight:700; color:#222; text-transform:capitalize; }
+.today-sub{ font-size:0.85rem; color:#888; margin:4px 0 12px; }
+.today-recs{ display:flex; flex-direction:column; gap:8px; }
+.rec-item{ display:flex; align-items:center; gap:10px; flex-wrap:wrap; }
+.rec-reason{ font-size:0.8rem; color:#999; }
+.cal-search{ margin:18px 0 10px; }
+#cal-search-input{ width:100%; padding:12px 16px; font-size:0.95rem; font-family:Arial,sans-serif; border:2px solid #eee; border-radius:24px; outline:none; transition:border .2s; }
+#cal-search-input:focus{ border-color:#ef5024; }
+.cal-table-wrap{ overflow-x:auto; border:1px solid #eee; border-radius:12px; }
+.cal-table{ width:100%; border-collapse:collapse; font-size:0.88rem; }
+.cal-table th{ text-align:left; padding:10px 14px; background:#fafafa; color:#888; font-size:0.72rem; text-transform:uppercase; letter-spacing:1px; border-bottom:2px solid #f0f0f0; }
+.cal-table td{ padding:10px 14px; border-bottom:1px solid #f3f3f3; vertical-align:middle; }
+.cal-table tr:last-child td{ border-bottom:none; }
+.cal-empty{ color:#bbb; text-align:center; padding:18px; }
+.puja-chip{ display:inline-flex; align-items:center; gap:4px; background:#f5f5f5; color:#888; border-radius:16px; padding:4px 11px; font-size:0.8rem; white-space:nowrap; margin:2px 0; }
+.puja-chip.live{ background:#fff0eb; color:#df2227; cursor:pointer; border:1px solid #ffd9cc; }
+.puja-chip.live:hover{ background:#df2227; color:#fff; }
+.festivals{ display:grid; grid-template-columns:repeat(auto-fill,minmax(210px,1fr)); gap:12px; }
+.fest-card{ border:1px solid #f0e2d8; border-radius:12px; padding:12px 14px; background:#fff; }
+.fest-name{ font-weight:700; color:#222; font-size:0.92rem; margin-bottom:8px; }
+.fest-note{ color:#aaa; font-weight:400; font-size:0.78rem; }
+.fest-pujas{ display:flex; flex-wrap:wrap; gap:6px; margin-bottom:6px; }
+.fest-dates{ font-size:0.72rem; color:#888; }
+.fest-dates.muted{ color:#c4c4c4; font-style:italic; }
+.cal-note{ font-size:0.74rem; color:#aaa; margin-top:16px; line-height:1.5; }
+
+/* ===================== СТАТИСТИКА ===================== */
+.stats-cards{ display:grid; grid-template-columns:repeat(auto-fit,minmax(120px,1fr)); gap:12px; }
+.stat-card{ border:1px solid #f0e2d8; border-radius:12px; padding:16px; text-align:center; background:linear-gradient(180deg,#fff8f4,#fff); }
+.stat-val{ font-size:1.6rem; font-weight:700; color:#df2227; }
+.stat-label{ font-size:0.74rem; color:#999; margin-top:4px; }
+.stats-list{ display:flex; flex-direction:column; gap:4px; }
+.stat-row{ display:flex; justify-content:space-between; padding:8px 12px; border-bottom:1px solid #f3f3f3; font-size:0.88rem; color:#555; }
+.stat-row b{ color:#df2227; }
+.reset-stats{ margin-top:18px; border:1px solid #eee; background:#fafafa; color:#999; padding:8px 18px; border-radius:20px; cursor:pointer; font-size:0.8rem; }
+.reset-stats:hover{ background:#ffecec; color:#df2227; }
+
+@media (max-width:600px){
+  .nav-btn{ font-size:0.74rem; padding:6px 12px; }
+  .stepper{ flex-wrap:nowrap; overflow-x:auto; justify-content:flex-start; order:5; margin:6px 14px 0; }
+  .festivals{ grid-template-columns:1fr 1fr; }
+}
+@media (orientation: landscape) and (max-height: 520px){
+  .stepper{ margin-top:5px; }
+  .stepper .st-dot{ width:18px; height:18px; font-size:0.6rem; }
+  .stepper .st-line{ width:8px; }
+}
 </style>
 </head>
 <body>
@@ -560,6 +678,14 @@ header .om { font-size: 1.5rem; }
 <header>
   <h1>УЧЕБНАЯ ПУДЖА</h1>
 </header>
+<nav class="topnav">
+  <button class="nav-btn active" data-view="practice" onclick="switchView('practice')">🪔 Практика</button>
+  <button class="nav-btn" data-view="calendar" onclick="switchView('calendar')">📅 Календарь</button>
+  <button class="nav-btn" data-view="stats" onclick="switchView('stats')">📊 Статистика</button>
+</nav>
+
+<div id="view-practice" class="view">
+
 
 <div class="deity-tabs" id="deity-tabs"></div>
 
@@ -609,6 +735,7 @@ header .om { font-size: 1.5rem; }
       </div>
       <div class="altar-table-leg"></div>
     </div>
+    <div class="stepper" id="stepper"></div>
 
 
 
@@ -625,6 +752,7 @@ header .om { font-size: 1.5rem; }
       <div class="step-instruction" id="step-instr"></div>
       <div class="step-accepts"  id="step-acc"></div>
       <div class="step-hint-txt" id="step-hint"></div>
+      <div class="step-meaning" id="step-meaning"></div>
     </div>
     <div class="feedback" id="feedback"></div>
     <button class="hint-btn" onclick="showHint()">💡 Подсказка</button>
@@ -634,6 +762,33 @@ header .om { font-size: 1.5rem; }
     </div>
   </div>
 
+</div>
+
+</div><!-- /view-practice -->
+
+<div id="view-calendar" class="view" hidden>
+  <div class="page">
+    <h2 class="page-title">Календарь пудж</h2>
+    <div class="today-card" id="today-card"></div>
+    <div class="cal-search">
+      <input id="cal-search-input" type="text" oninput="renderCalTable()"
+        placeholder="Поиск: Shiva, Friday, Amavasya, Lakshmi, Ekadashi, Rahu…">
+    </div>
+    <div class="cal-table-wrap"><table class="cal-table" id="cal-table"></table></div>
+    <h3 class="page-subtitle">Праздники</h3>
+    <div class="festivals" id="festivals"></div>
+    <p class="cal-note">Тип лунного дня (титхи и пакша) рассчитывается автоматически и приближённо. Точные даты именованных праздников можно вписать в данные приложения (поле dates у каждого праздника).</p>
+  </div>
+</div>
+
+<div id="view-stats" class="view" hidden>
+  <div class="page">
+    <h2 class="page-title">Статистика практики</h2>
+    <div class="stats-cards" id="stats-cards"></div>
+    <h3 class="page-subtitle">По пуджам</h3>
+    <div class="stats-list" id="stats-list"></div>
+    <button class="reset-stats" onclick="resetStats()">Сбросить статистику</button>
+  </div>
 </div>
 
 <div class="complete-overlay" id="complete-overlay">
@@ -682,6 +837,20 @@ const FIXED = { water:'fixed-item', lamp:'lamp-item', incense:'fixed-item' };
 const ITEM_MAP = {};
 ITEMS.forEach(it => ITEM_MAP[it.id] = it);
 
+// ── СМЫСЛ ПОДНОШЕНИЙ ──
+const OFFERING_MEANINGS = {
+  water:'Очищение и подношение чистоты', milk:'Изобилие и питание', yogurt:'Благополучие',
+  honey:'Сладость преданности', ghee:'Свет знания и чистота', rice:'Пища и достаток',
+  kumkum:'Благоприятность, энергия Шакти', turmeric:'Чистота и защита',
+  sandalwood:'Прохлада ума и благоговение', flower:'Красота и преданность',
+  lotus:'Чистота и духовное раскрытие', rose:'Любовь и преданность', marigold:'Благоприятность',
+  leaves:'Природа и жизненная сила', coconut:'Растворение эго', banana:'Плодородие и благость',
+  apple:'Здоровье и плоды трудов', sweet:'Радость и благодарность', fruit:'Плоды подношения',
+  lamp:'Свет, рассеивающий тьму невежества', incense:'Чистота пространства, тонкий аромат',
+  bell:'Священный звук — завершение и призыв божественного',
+};
+function stepMeaning(s){ return (s && s.accept) ? (OFFERING_MEANINGS[s.accept[0]]||'') : ''; }
+
 // ── FLOWER SHORTCUTS ──
 const F  = ['flower','lotus','rose','marigold'];
 const RF = ['rose','lotus'];
@@ -704,6 +873,7 @@ const TIPS = {
   lingam:    'Шива-Лингам — символ Шивы. Абхишека (омовение) совершается с водой, молоком, мёдом и гхи последовательно — это очищающий ритуал.',
   saraswati: 'Сарасвати — богиня знания, музыки и искусств. Белый цвет символизирует чистоту знания. Рис как символ учения и питания ума.',
   rama:      'Рама — седьмое воплощение Вишну, идеальный царь. Сандаловая паста символизирует благородство и чистоту характера.',
+  nataraja:  'Натараджа — образ Шивы, исполняющего космический танец Тандава. Кольцо огня — Вселенная, барабан-дамару — звук творения, поднятая стопа — освобождение. Танец символизирует пять действий: творение, поддержание, разрушение, сокрытие и милость.',
   surya:     'Сурья — бог Солнца. Красные цветы и кумкум — цвет восходящего солнца. Его пуджу совершают на рассвете, лицом к востоку.',
   chandra:   'Чандра — бог Луны. Белые подношения: молоко, белые цветы, рис — отражают его лунную природу. Понедельник — его день.',
   mangala:   'Мангала (Марс) — планета энергии и действия. Красный цвет его атрибут. Вторник — день Мангала.',
@@ -712,10 +882,13 @@ const TIPS = {
   shani:     'Шани (Сатурн) — планета кармы и дисциплины. Тёмные цвета его символ. Суббота — день Шани. Его пуджа снимает кармические препятствия.',
   rahu:      'Раху — Северный лунный узел, теневая планета. Кокос — особое подношение для Раху как символ отсечения привязанностей.',
   ketu:      'Кету — Южный лунный узел. Сандаловая паста помогает успокоить его острую энергию. Кету символизирует освобождение.',
+  shraddha:  'Шраддха — обряд почитания предков (питри). Возлияние воды (тарпана) и рисовые шарики (пинда) выражают благодарность ушедшим. Совершается в новолуние (Амавасья) и в период Питри-пакша. Тихое, простое и уважительное подношение.',
 };
 
 // ── DEITIES DATA ──
 const IMGS = {
+  'shraddha': 'gods/pitru.png',
+  'nataraja': 'gods/nataraja.png',
   'ganesha': 'gods/ganesha.png',
   'shiva': 'gods/shiva.png',
   'durga': 'gods/durga.png',
@@ -857,6 +1030,23 @@ const DEITIES = [
     ]
   },
   {
+    id:'nataraja', name:'Натараджа', subtitle:'Шива — владыка космического танца',
+    mantra:'ॐ श्री नटराजाय नमः', mantraRu:'Ом Шри Натараджайа Намаха',
+    sequence:[
+      {label:'Предложите воду',              accept:['water'],      hint:''},
+      {label:'Предложите молоко',            accept:['milk'],       hint:''},
+      {label:'Предложите сандаловую пасту',  accept:['sandalwood'], hint:''},
+      {label:'Предложите листочки',          accept:['leaves'],     hint:''},
+      {label:'Предложите цветы',             accept:['flower','lotus','rose','marigold'], hint:'любой цветок: 🌸🌺🌹🌼'},
+      {label:'Предложите благовония',        accept:['incense'],    hint:''},
+      {label:'Зажгите дипу (лампу)',         accept:['lamp'],       hint:''},
+      {label:'Предложите фрукты',            accept:['apple','banana','fruit'], hint:'фрукты: 🍎🍌🥭'},
+      {label:'Предложите сладости',          accept:['sweet'],      hint:''},
+      {label:'Снова предложите воду',        accept:['water'],      hint:''},
+      {label:'Позвоните в колокольчик',      accept:['bell'],       hint:'нажмите на колокольчик'},
+    ]
+  },
+  {
     id:'surya', name:'Сурья', subtitle:'Бог Солнца',
     mantra:'ॐ सूर्याय नमः', mantraRu:'Ом Сурьяйа Намаха',
     sequence:[
@@ -964,6 +1154,22 @@ const DEITIES = [
       {label:'Позвоните в колокольчик',      accept:['bell'],        hint:'нажмите на колокольчик'},
     ]
   },
+  {
+    id:'shraddha', name:'Шраддха', subtitle:'Почитание предков (питри)',
+    mantra:'ॐ पितृभ्यः नमः', mantraRu:'Ом Питрибхьях Намаха',
+    sequence:[
+      {label:'Предложите воду (тарпана)',     accept:['water'],   hint:''},
+      {label:'Предложите рис (пинда)',         accept:['rice'],    hint:''},
+      {label:'Предложите листочки (дарбха)',   accept:['leaves'],  hint:''},
+      {label:'Предложите цветы',               accept:['flower','lotus','rose','marigold'], hint:'любой цветок: 🌸🌺🌹🌼'},
+      {label:'Предложите благовония',          accept:['incense'], hint:''},
+      {label:'Зажгите дипу (лампу)',           accept:['lamp'],    hint:''},
+      {label:'Предложите фрукты',              accept:['apple','banana','fruit'], hint:'фрукты: 🍎🍌🥭'},
+      {label:'Предложите сладость',            accept:['sweet'],   hint:''},
+      {label:'Снова предложите воду',          accept:['water'],   hint:''},
+      {label:'Позвоните в колокольчик',        accept:['bell'],    hint:'нажмите на колокольчик'},
+    ]
+  },
 ];
 
 // ── STATE ──
@@ -973,15 +1179,15 @@ let step = 0;
 // ── TABS ──
 const TAB_ICONS = {
   ganesha:'🐘', shiva:'🌙', durga:'⚔️', lakshmi:'🌸', vishnu:'💛',
-  lingam:'🔱', saraswati:'🎵', rama:'🏹', surya:'☀️', chandra:'🌕',
-  mangala:'🔴', budha:'💚', shukra:'⬜', shani:'🪐', rahu:'🌑', ketu:'🌒'
+  lingam:'🔱', saraswati:'🎵', rama:'🏹', nataraja:'⭐', surya:'☀️', chandra:'🌕',
+  mangala:'🔴', budha:'💚', shukra:'⬜', shani:'🪐', rahu:'🌑', ketu:'🌒', shraddha:'🕯️'
 };
 
 function initTabs() {
   const tabs = document.getElementById('deity-tabs');
   DEITIES.forEach((d, i) => {
     const btn = document.createElement('button');
-    btn.className = 'tab-btn' + (i===0?' active':'');
+    btn.className = 'tab-btn' + (i===0?' active':'') + (d.id==='nataraja'?' tab-special':'');
     btn.id = 'tab-' + d.id;
     btn.innerHTML = `<span class="tab-icon">${TAB_ICONS[d.id]||'🌟'}</span><span class="tab-name">${d.name}</span>`;
     btn.onclick = () => selectDeity(d.id);
@@ -1003,6 +1209,7 @@ function selectDeity(id) {
 function renderAll() {
   // Deity
   document.getElementById('deity-img').src = IMGS[cur.id] || '';
+  document.querySelector('.shrine').classList.toggle('radiant', cur.id === 'nataraja');
   document.getElementById('deity-name-l').textContent = cur.name.toUpperCase();
   document.getElementById('deity-sub-l').textContent = cur.subtitle;
   document.getElementById('m-skt').textContent = cur.mantra;
@@ -1064,6 +1271,7 @@ function renderStepCard() {
   const pct = total > 0 ? (step / total * 100) : 0;
   document.getElementById('step-bar').style.width = pct + '%';
   document.getElementById('step-txt').textContent = `${step} / ${total}`;
+  renderStepper();
 
   const card = document.getElementById('step-card');
   card.className = 'step-card';
@@ -1076,11 +1284,13 @@ function renderStepCard() {
   if (s.accept[0] === 'bell') {
     document.getElementById('step-acc').textContent = '🔔';
     document.getElementById('step-hint').textContent = 'нажмите на колокольчик ниже';
+    document.getElementById('step-meaning').textContent = OFFERING_MEANINGS['bell'] || '';
     setBell(true);
   } else {
     const emojis = s.accept.map(id => ITEM_MAP[id]?.emoji || '').join(' ');
     document.getElementById('step-acc').textContent = emojis;
     document.getElementById('step-hint').textContent = s.hint ? '(' + s.hint + ')' : '';
+    document.getElementById('step-meaning').textContent = stepMeaning(s);
     setBell(false);
   }
 }
@@ -1090,6 +1300,7 @@ function offerItem(item, cardEl) {
   if (step >= cur.sequence.length) return;
   const s = cur.sequence[step];
   if (s.accept[0] === 'bell') {
+    recordError();
     setFeedback('err', '🔔 Сначала позвоните в колокольчик!');
     return;
   }
@@ -1099,6 +1310,7 @@ function offerItem(item, cardEl) {
     setTimeout(() => blessDeity(), 550);
     setFeedback('ok', '✓ ' + item.emoji + ' ' + item.name + ' — принято');
     flashCard('right');
+    recordCorrect();
     step++;
     if (step >= cur.sequence.length) {
       deityCelebrate();
@@ -1110,6 +1322,7 @@ function offerItem(item, cardEl) {
     cardEl.classList.add('wrong-flash');
     setTimeout(() => cardEl.classList.remove('wrong-flash'), 500);
     flashCard('wrong');
+    recordError();
     const need = s.accept.map(id => ITEM_MAP[id]?.emoji||'').join('');
     setFeedback('err', '✗ Не то. Нужно: ' + need + (s.hint ? ' ('+s.hint+')' : ''));
   }
@@ -1153,6 +1366,7 @@ function ringBell() {
 
   // Advance step
   step++;
+  recordCorrect();
   renderSeq();
   const total = cur.sequence.length;
   document.getElementById('step-bar').style.width = (step/total*100) + '%';
@@ -1272,6 +1486,7 @@ function setFeedback(type, msg) {
 
 // ── COMPLETE ──
 function showComplete() {
+  recordCompletion(cur.id);
   document.getElementById('step-bar').style.width = '100%';
   const total = cur.sequence.length;
   document.getElementById('step-txt').textContent = `${total} / ${total}`;
@@ -1301,9 +1516,215 @@ function hideComplete() {
   renderAll();
 }
 
+
+/* ============================================================
+   ДАННЫЕ И ЛОГИКА: рекомендации, праздники, статистика, степпер
+   (всё в одном месте — легко редактировать)
+   ============================================================ */
+const PUJA_META = {
+  ganesha:{ru:'Ганеша',en:'Ganesha'},
+  shiva:{ru:'Шива',en:'Shiva'},
+  durga:{ru:'Дурга',en:'Durga'},
+  lakshmi:{ru:'Лакшми',en:'Lakshmi'},
+  vishnu:{ru:'Вишну',en:'Vishnu',planet:'Юпитер Jupiter Guru Брихаспати'},
+  lingam:{ru:'Шива-Лингам',en:'Shiva Lingam'},
+  saraswati:{ru:'Сарасвати',en:'Saraswati'},
+  rama:{ru:'Рама',en:'Rama'},
+  nataraja:{ru:'Натараджа',en:'Nataraja'},
+  surya:{ru:'Сурья',en:'Surya',planet:'Солнце Sun'},
+  chandra:{ru:'Чандра',en:'Chandra',planet:'Луна Moon'},
+  mangala:{ru:'Мангала',en:'Mangala',planet:'Марс Mars'},
+  budha:{ru:'Будха',en:'Budha',planet:'Меркурий Mercury'},
+  shukra:{ru:'Шукра',en:'Shukra',planet:'Венера Venus'},
+  shani:{ru:'Шани',en:'Shani',planet:'Сатурн Saturn'},
+  rahu:{ru:'Раху',en:'Rahu'},
+  ketu:{ru:'Кету',en:'Ketu'},
+  shraddha:{ru:'Шраддха (Питри)',en:'Shraddha Pitru ancestors'},
+};
+const WEEKDAYS_RU=['Воскресенье','Понедельник','Вторник','Среда','Четверг','Пятница','Суббота'];
+const WEEKDAYS_EN=['Sunday','Monday','Tuesday','Wednesday','Thursday','Friday','Saturday'];
+const PHASE_RU={waxing:'растущая луна',waning:'убывающая луна'};
+const PHASE_EN={waxing:'waxing',waning:'waning'};
+
+// Правила «день недели + фаза луны» -> id пудж
+const WEEKDAY_RULES = {
+  0:{waxing:['rama'],     waning:['surya']},
+  1:{waxing:['shiva'],    waning:['chandra']},
+  2:{waxing:['durga'],    waning:['mangala']},
+  3:{waxing:['saraswati'],waning:['budha']},
+  4:{waxing:['ganesha'],  waning:['vishnu']},   // убыв. четверг = Гуру/Брихаспати -> Вишну
+  5:{waxing:['lakshmi'],  waning:['shukra']},
+  6:{waxing:['shani'],    waning:['rahu','ketu']},
+};
+// Особые лунные дни (приоритет выше дня недели)
+const OBSERVANCE_RULES = {
+  purnima:{ru:'Полнолуние (Пурнима)',en:'Full moon Purnima',pujas:['nataraja']},
+  amavasya:{ru:'Новолуние (Амавасья)',en:'New moon Amavasya',pujas:['shraddha']},
+  ekadashi:{ru:'Экадаши',en:'Ekadashi',pujas:['vishnu']},
+  pradosha:{ru:'Прадоша',en:'Pradosha',pujas:['lingam']},
+};
+// Праздники — впишите даты 'ГГГГ-ММ-ДД' в dates, чтобы они подсвечивались «сегодня»
+const FESTIVALS = [
+  {id:'mahashivaratri',ru:'Маха Шиваратри',en:'Maha Shivaratri',pujas:['shiva','lingam'],dates:[]},
+  {id:'navaratri',ru:'Наваратри',en:'Navaratri',pujas:['durga'],dates:[]},
+  {id:'ganeshchaturthi',ru:'Ганеш Чатуртхи',en:'Ganesh Chaturthi',pujas:['ganesha'],dates:[]},
+  {id:'diwali',ru:'Дивали',en:'Diwali Deepavali',pujas:['lakshmi'],dates:[]},
+  {id:'vasantpanchami',ru:'Васант Панчами / Сарасвати-пуджа',en:'Vasant Panchami Saraswati',pujas:['saraswati'],dates:[]},
+  {id:'ramanavami',ru:'Рама Навами',en:'Rama Navami',pujas:['rama'],dates:[]},
+  {id:'gurupurnima',ru:'Гуру Пурнима',en:'Guru Purnima',pujas:['vishnu'],note:'Гуру / Брихаспати',dates:[]},
+];
+
+/* ---- Приближённый расчёт титхи / пакши (фазы луны) ---- */
+function angNorm(a){ a%=360; return a<0?a+360:a; }
+function julianDay(d){
+  let y=d.getUTCFullYear(), m=d.getUTCMonth()+1;
+  const day=d.getUTCDate()+(d.getUTCHours()+d.getUTCMinutes()/60)/24;
+  if(m<=2){y-=1;m+=12;}
+  const A=Math.floor(y/100), B=2-A+Math.floor(A/4);
+  return Math.floor(365.25*(y+4716))+Math.floor(30.6001*(m+1))+day+B-1524.5;
+}
+function sunLong(T){
+  const L0=280.46646+36000.76983*T;
+  const M=(357.52911+35999.05029*T)*Math.PI/180;
+  const C=(1.914602-0.004817*T)*Math.sin(M)+0.019993*Math.sin(2*M)+0.000289*Math.sin(3*M);
+  return angNorm(L0+C);
+}
+function moonLong(T){
+  let L=218.3164477+481267.88123421*T;
+  const D=(297.8501921+445267.1114034*T)*Math.PI/180;
+  const M=(357.5291092+35999.0502909*T)*Math.PI/180;
+  const Mp=(134.9633964+477198.8675055*T)*Math.PI/180;
+  const F=(93.272095+483202.0175233*T)*Math.PI/180;
+  L+=6.288774*Math.sin(Mp)+1.274027*Math.sin(2*D-Mp)+0.658314*Math.sin(2*D)
+   +0.213618*Math.sin(2*Mp)-0.185116*Math.sin(M)-0.114332*Math.sin(2*F)
+   +0.058793*Math.sin(2*D-2*Mp)+0.057066*Math.sin(2*D-M-Mp)+0.053322*Math.sin(2*D+Mp)
+   +0.045758*Math.sin(2*D-M)-0.040923*Math.sin(M-Mp)-0.034720*Math.sin(D)-0.030383*Math.sin(M+Mp);
+  return angNorm(L);
+}
+function panchang(date){
+  const JD=julianDay(new Date(Date.UTC(date.getFullYear(),date.getMonth(),date.getDate(),6,0,0)));
+  const T=(JD-2451545.0)/36525;
+  const elong=angNorm(moonLong(T)-sunLong(T));
+  const ti=Math.floor(elong/12);          // 0..29
+  const tithi=ti+1;
+  const paksha= ti<15?'waxing':'waning';
+  let phaseName= paksha==='waxing'?'Растущая луна':'Убывающая луна';
+  if(ti===14) phaseName='Полнолуние (Пурнима)';
+  if(ti===29) phaseName='Новолуние (Амавасья)';
+  return { weekday:date.getDay(), tithi, paksha, phaseName,
+    purnima:ti===14, amavasya:ti===29, ekadashi:(tithi===11||tithi===26), pradosha:(tithi===13||tithi===28) };
+}
+function fmtDate(d){ const m=('0'+(d.getMonth()+1)).slice(-2), day=('0'+d.getDate()).slice(-2); return d.getFullYear()+'-'+m+'-'+day; }
+
+/* ---- Рекомендации на дату (наблюдения > день недели > праздник по дате) ---- */
+function recsForDate(date){
+  const p=panchang(date); const out=[];
+  ['purnima','amavasya','ekadashi','pradosha'].forEach(o=>{
+    if(p[o]) OBSERVANCE_RULES[o].pujas.forEach(id=>out.push({id,reason:OBSERVANCE_RULES[o].ru}));
+  });
+  (WEEKDAY_RULES[p.weekday][p.paksha]||[]).forEach(id=>out.push({id,reason:WEEKDAYS_RU[p.weekday]+', '+PHASE_RU[p.paksha]}));
+  const ds=fmtDate(date);
+  FESTIVALS.forEach(f=>{ if((f.dates||[]).includes(ds)) f.pujas.forEach(id=>out.push({id,reason:'Праздник: '+f.ru})); });
+  const seen={}; return out.filter(r=> seen[r.id]?false:(seen[r.id]=true));   // дедуп, приоритет сохранён
+}
+
+/* ---- Переключение разделов ---- */
+function switchView(v){
+  document.querySelectorAll('.view').forEach(el=>el.hidden=(el.id!=='view-'+v));
+  document.querySelectorAll('.nav-btn').forEach(b=>b.classList.toggle('active', b.dataset.view===v));
+  document.body.classList.toggle('scroll-view', v!=='practice');
+  if(v==='calendar'){ renderToday(); renderCalTable(); }
+  if(v==='stats'){ renderStats(); }
+}
+function gotoPractice(id){ switchView('practice'); selectDeity(id); }
+
+/* ---- Календарь UI ---- */
+function pujaChip(id, clickable){
+  const m=PUJA_META[id]||{ru:id}; const exists=DEITIES.some(d=>d.id===id);
+  const on=(clickable&&exists)?("onclick=\"gotoPractice('"+id+"')\""):"";
+  return '<span class="puja-chip '+(exists?'live':'')+'" '+on+'>'+(TAB_ICONS[id]||'•')+' '+m.ru+'</span>';
+}
+function renderToday(){
+  const el=document.getElementById('today-card'); if(!el) return;
+  const now=new Date(); const p=panchang(now); const recs=recsForDate(now);
+  el.innerHTML =
+    '<div class="today-date">'+now.toLocaleDateString('ru-RU',{weekday:'long',day:'numeric',month:'long',year:'numeric'})+'</div>'+
+    '<div class="today-sub">'+p.phaseName+' · титхи '+p.tithi+' · '+PHASE_RU[p.paksha]+'</div>'+
+    '<div class="today-recs">'+recs.map(r=>'<div class="rec-item">'+pujaChip(r.id,true)+'<span class="rec-reason">'+r.reason+'</span></div>').join('')+'</div>';
+}
+function calRows(){
+  const rows=[];
+  Object.keys(OBSERVANCE_RULES).forEach(o=>{ const r=OBSERVANCE_RULES[o]; rows.push({trig:r.ru,en:r.en,pujas:r.pujas}); });
+  for(let w=0;w<7;w++) ['waxing','waning'].forEach(ph=>{
+    rows.push({trig:WEEKDAYS_RU[w]+', '+PHASE_RU[ph], en:WEEKDAYS_EN[w]+' '+PHASE_EN[ph], pujas:WEEKDAY_RULES[w][ph]});
+  });
+  return rows;
+}
+function pujaSearchStr(id){ const m=PUJA_META[id]||{}; return [m.ru,m.en,m.planet].filter(Boolean).join(' '); }
+function renderCalTable(){
+  const q=((document.getElementById('cal-search-input')||{}).value||'').trim().toLowerCase();
+  const toks=q.split(/\s+/).filter(Boolean);
+  const match=hay=>toks.every(t=>hay.includes(t));
+  const t=document.getElementById('cal-table');
+  if(t){
+    const rows=calRows().filter(r=>match((r.trig+' '+(r.en||'')+' '+r.pujas.map(pujaSearchStr).join(' ')).toLowerCase()));
+    t.innerHTML='<thead><tr><th>Когда</th><th>Рекомендуемая пуджа</th></tr></thead><tbody>'+
+      (rows.length?rows.map(r=>'<tr><td>'+r.trig+'</td><td>'+r.pujas.map(id=>pujaChip(id,true)).join(' ')+'</td></tr>').join('')
+        :'<tr><td colspan="2" class="cal-empty">Ничего не найдено</td></tr>')+'</tbody>';
+  }
+  const fe=document.getElementById('festivals');
+  if(fe){
+    const list=FESTIVALS.filter(f=>match((f.ru+' '+f.en+' '+f.pujas.map(pujaSearchStr).join(' ')).toLowerCase()));
+    fe.innerHTML = list.length? list.map(f=>
+      '<div class="fest-card"><div class="fest-name">'+f.ru+(f.note?' <span class="fest-note">('+f.note+')</span>':'')+'</div>'+
+      '<div class="fest-pujas">'+f.pujas.map(id=>pujaChip(id,true)).join(' ')+'</div>'+
+      ((f.dates&&f.dates.length)?'<div class="fest-dates">'+f.dates.join(', ')+'</div>':'<div class="fest-dates muted">дата по лунному календарю</div>')+'</div>'
+    ).join('') : '<div class="cal-empty">Ничего не найдено</div>';
+  }
+}
+
+/* ---- Статистика (localStorage) ---- */
+const STATS_KEY='puja_stats_v2';
+function defaultStats(){ return {completions:{},total:0,errors:0,correct:0,sessions:0,last:null}; }
+function loadStats(){ try{const r=JSON.parse(localStorage.getItem(STATS_KEY)); if(r) return Object.assign(defaultStats(),r);}catch(e){} return defaultStats(); }
+let STATS=loadStats();
+function saveStats(){ try{localStorage.setItem(STATS_KEY,JSON.stringify(STATS));}catch(e){} }
+function recordCorrect(){ STATS.correct++; saveStats(); }
+function recordError(){ STATS.errors++; saveStats(); renderStats(); }
+function recordCompletion(id){ STATS.completions[id]=(STATS.completions[id]||0)+1; STATS.total++; STATS.last=id; saveStats(); renderStats(); }
+function statCard(v,l){ return '<div class="stat-card"><div class="stat-val">'+v+'</div><div class="stat-label">'+l+'</div></div>'; }
+function renderStats(){
+  const acc=(STATS.correct+STATS.errors)>0?Math.round(STATS.correct/(STATS.correct+STATS.errors)*100):100;
+  const cards=document.getElementById('stats-cards');
+  if(cards){
+    const last=STATS.last?((PUJA_META[STATS.last]||{}).ru||'—'):'—';
+    cards.innerHTML=statCard(STATS.total,'Завершено пудж')+statCard(STATS.errors,'Ошибок')+statCard(acc+'%','Точность')+statCard(STATS.sessions,'Сессий')+statCard(last,'Последняя');
+  }
+  const list=document.getElementById('stats-list');
+  if(list){
+    const rows=DEITIES.map(d=>({d,c:STATS.completions[d.id]||0})).sort((a,b)=>b.c-a.c);
+    list.innerHTML=rows.map(r=>'<div class="stat-row"><span>'+(TAB_ICONS[r.d.id]||'•')+' '+r.d.name+'</span><b>'+r.c+'</b></div>').join('');
+  }
+}
+function resetStats(){ if(confirm('Сбросить всю статистику?')){ STATS=defaultStats(); saveStats(); renderStats(); } }
+
+/* ---- Степпер под алтарём ---- */
+function renderStepper(){
+  const el=document.getElementById('stepper'); if(!el) return;
+  const n=cur.sequence.length; let h='';
+  for(let i=0;i<n;i++){
+    const state=i<step?'done':i===step?'current':'future';
+    h+='<div class="st '+state+'" title="'+cur.sequence[i].label+'"><div class="st-dot">'+(i<step?'✓':(i+1))+'</div></div>';
+    if(i<n-1) h+='<div class="st-line '+(i<step?'done':'')+'"></div>';
+  }
+  el.innerHTML=h;
+}
+
 // ── START ──
+STATS.sessions++; saveStats();
 initTabs();
 selectDeity('ganesha');
+renderStats();
 </script>
 </body>
 </html>
